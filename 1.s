@@ -1,13 +1,11 @@
   .data
 
-# Initial buffer value
 initial_buffer:
-  .word 0x67452301 # A
-  .word 0xefcdab89 # B
-  .word 0x98badcfe # C
-  .word 0x10325476 # D
+  .word 0x67452301
+  .word 0xefcdab89
+  .word 0x98badcfe
+  .word 0x10325476
 
-# 64-element table constructed from the sine function.
 K:
   .word 0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee
   .word 0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501
@@ -26,7 +24,6 @@ K:
   .word 0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1
   .word 0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
 
-# Per-round shift amounts
 S:
   .word 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22
   .word 5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20
@@ -34,7 +31,7 @@ S:
   .word 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21
 
 hex_chars: .asciiz "0123456789abcdef"
-buffer: .space 64  # 512位缓冲区
+buffer: .space 64
 padding: .byte 0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
          .byte    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
          .byte    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -42,22 +39,8 @@ padding: .byte 0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
   .text
 
-# -----------------------------------------------------------------
-# Function: md5
-#
-# Description:
-#   Computes the MD5 hash of an input message using the MD5 algorithm.
-#   The computed digest is stored in memory.
-#
-# Parameters:
-#   a0 - Pointer to the beginning of the input message.
-#   a1 - Length of the input message in bytes.
-#   a2 - Pointer to a memory region where the resulting MD5 digest
-#        will be stored.
-# -----------------------------------------------------------------
   .globl md5
 md5:
-  # 保存寄存器
   addi sp, sp, -64
   sw ra, 60(sp)
   sw s0, 56(sp)
@@ -73,36 +56,30 @@ md5:
   sw s10, 16(sp)
   sw s11, 12(sp)
   
-  # 保存参数
-  mv s0, a0    # 输入消息指针
-  mv s1, a1    # 消息长度(字节)
-  mv s2, a2    # 结果指针
+  mv s0, a0
+  mv s1, a1
+  mv s2, a2
   
-  # 初始化哈希值
   la t0, initial_buffer
-  lw s3, 0(t0)   # A
-  lw s4, 4(t0)   # B
-  lw s5, 8(t0)   # C
-  lw s6, 12(t0)  # D
+  lw s3, 0(t0)
+  lw s4, 4(t0)
+  lw s5, 8(t0)
+  lw s6, 12(t0)
   
-  # 初始化缓冲区
   la s7, buffer
   
-  # 计算需要处理的块数
-  addi t0, s1, 9     # 长度 + 1(0x80) + 8(长度信息)
+  addi t0, s1, 9
   li t1, 64
-  addi t0, t0, 63    # 取上限
-  div t0, t0, t1     # 块数
-  mv s8, t0          # 保存块数
+  addi t0, t0, 63
+  div t0, t0, t1
+  mv s8, t0
   
-  li s9, 0           # 当前处理的块索引
-  li s10, 0          # 已处理的字节数
+  li s9, 0
+  li s10, 0
   
 process_blocks:
-  # 检查是否处理完所有块
   beq s9, s8, md5_done
   
-  # 清空缓冲区
   li t0, 0
   li t1, 64
 clear_buffer:
@@ -110,21 +87,18 @@ clear_buffer:
   addi s7, s7, 1
   addi t0, t0, 1
   bne t0, t1, clear_buffer
-  la s7, buffer  # 重置缓冲区指针
+  la s7, buffer
   
-  # 计算当前块类型
   bge s10, s1, padding_block
   
-  # 计算可以复制多少字节到当前块
-  sub t0, s1, s10    # 剩余字节数
+  sub t0, s1, s10
   li t1, 64
-  min t0, t0, t1     # 取最小值
+  min t0, t0, t1
   
-  # 复制数据到缓冲区
-  mv t1, s0          # 源指针 + 偏移
+  mv t1, s0
   add t1, t1, s10
-  mv t2, s7          # 目标指针
-  li t3, 0           # 已复制的字节数
+  mv t2, s7
+  li t3, 0
 copy_data:
   beq t3, t0, copy_done
   lb t4, 0(t1)
@@ -135,67 +109,56 @@ copy_data:
   j copy_data
   
 copy_done:
-  add s10, s10, t0   # 更新已处理的字节数
+  add s10, s10, t0
   
-  # 检查这个块是否需要添加填充
   bne s10, s1, process_block
   
-  # 添加0x80填充
   add t0, s7, t0
   li t1, 0x80
   sb t1, 0(t0)
   
-  # 检查是否有足够空间添加长度
-  addi t0, t0, 1     # 跳过0x80
-  sub t1, s7, t0     # 剩余空间
+  addi t0, t0, 1
+  sub t1, s7, t0
   addi t1, t1, 64
   li t2, 8
   bge t1, t2, add_length
-  j process_block    # 不够空间，先处理当前块
+  j process_block
   
 padding_block:
-  # 检查是否是最后一个块
   addi t0, s8, -1
   bne s9, t0, process_block
   
-  # 在最后8个字节添加长度(以位为单位)
-  slli t0, s1, 3     # 长度(位) = 长度(字节) * 8
-  addi t1, s7, 56    # 偏移到最后8个字节
-  sw t0, 0(t1)       # 存储低32位
-  sw zero, 4(t1)     # 高32位为0(假设长度不超过2^32-1)
+  slli t0, s1, 3
+  addi t1, s7, 56
+  sw t0, 0(t1)
+  sw zero, 4(t1)
   
 add_length:
-  # 在最后8个字节添加长度(以位为单位)
-  slli t0, s1, 3     # 长度(位) = 长度(字节) * 8
-  addi t1, s7, 56    # 偏移到最后8个字节
-  sw t0, 0(t1)       # 存储低32位
-  sw zero, 4(t1)     # 高32位为0(假设长度不超过2^32-1)
+  slli t0, s1, 3
+  addi t1, s7, 56
+  sw t0, 0(t1)
+  sw zero, 4(t1)
   
 process_block:
-  # 保存原始哈希值
-  mv t0, s3    # A
-  mv t1, s4    # B
-  mv t2, s5    # C
-  mv t3, s6    # D
+  mv t0, s3
+  mv t1, s4
+  mv t2, s5
+  mv t3, s6
   
-  # 进行64轮转换操作
-  li s11, 0    # 轮次索引
+  li s11, 0
   
 md5_loop:
   li t4, 64
   bge s11, t4, md5_loop_done
   
-  # 确定使用哪个函数和消息索引
   li t4, 16
   bge s11, t4, check_second_round
   
-  # 第一轮: F(x,y,z) = (x & y) | (~x & z)
   and t4, s4, s5
   not t5, s4
   and t5, t5, s6
   or t4, t4, t5
   
-  # g = i
   mv t5, s11
   j process_round
   
@@ -203,13 +166,11 @@ check_second_round:
   li t4, 32
   bge s11, t4, check_third_round
   
-  # 第二轮: G(x,y,z) = (x & z) | (y & ~z)
   and t4, s4, s6
   not t5, s6
   and t5, s5, t5
   or t4, t4, t5
   
-  # g = (5*i + 1) % 16
   li t5, 5
   mul t5, t5, s11
   addi t5, t5, 1
@@ -221,11 +182,9 @@ check_third_round:
   li t4, 48
   bge s11, t4, fourth_round
   
-  # 第三轮: H(x,y,z) = x ^ y ^ z
   xor t4, s4, s5
   xor t4, t4, s6
   
-  # g = (3*i + 5) % 16
   li t5, 3
   mul t5, t5, s11
   addi t5, t5, 5
@@ -234,77 +193,64 @@ check_third_round:
   j process_round
   
 fourth_round:
-  # 第四轮: I(x,y,z) = y ^ (x | ~z)
   not t4, s6
   or t4, s4, t4
   xor t4, s5, t4
   
-  # g = (7*i) % 16
   li t5, 7
   mul t5, t5, s11
   li t6, 16
   rem t5, t5, t6
   
 process_round:
-  # 获取K[i]
   la t6, K
-  slli t7, s11, 2    # i * 4
-  add t6, t6, t7
-  lw t6, 0(t6)       # K[i]
+  slli t0, s11, 2
+  add t6, t6, t0
+  lw t6, 0(t6)
   
-  # 获取S[i]
-  la t7, S
-  slli t8, s11, 2    # i * 4
-  add t7, t7, t8
-  lw t7, 0(t7)       # S[i]
+  la t0, S
+  slli t1, s11, 2
+  add t0, t0, t1
+  lw t0, 0(t0)
   
-  # 获取M[g]
-  slli t8, t5, 2     # g * 4
-  add t8, s7, t8
-  lw t8, 0(t8)       # M[g]
+  slli t1, t5, 2
+  add t1, s7, t1
+  lw t1, 0(t1)
   
-  # F = F + A + K[i] + M[g]
   add t4, t4, s3
   add t4, t4, t6
-  add t4, t4, t8
+  add t4, t4, t1
   
-  # 循环左移
-  sll t6, t4, t7
-  li t8, 32
-  sub t8, t8, t7
-  srl t7, t4, t8
-  or t4, t6, t7
+  sll t1, t4, t0
+  li t2, 32
+  sub t2, t2, t0
+  srl t0, t4, t2
+  or t4, t1, t0
   
-  # 更新值
   add t4, t4, s4
   mv s3, s6
   mv s6, s5
   mv s5, s4
   mv s4, t4
   
-  # 继续下一轮
   addi s11, s11, 1
   j md5_loop
   
 md5_loop_done:
-  # 更新哈希值
   add s3, s3, t0
   add s4, s4, t1
   add s5, s5, t2
   add s6, s6, t3
   
-  # 处理下一个块
   addi s9, s9, 1
   j process_blocks
   
 md5_done:
-  # 存储最终哈希值
   sw s3, 0(s2)
   sw s4, 4(s2)
   sw s5, 8(s2)
   sw s6, 12(s2)
   
-  # 恢复寄存器
   lw ra, 60(sp)
   lw s0, 56(sp)
   lw s1, 52(sp)
@@ -322,20 +268,8 @@ md5_done:
   
   ret
 
-# -----------------------------------------------------------------
-# Function: print_message_digest
-#
-# Description:
-#   Prints the 16-byte MD5 message digest in a human-readable hexadecimal format.
-#   Each byte of the digest is converted to its two-digit hexadecimal representation,
-#   resulting in a 32-character string that represents the hash.
-#
-# Parameters:
-#   a0 - Pointer to the MD5 digest.
-# -----------------------------------------------------------------
   .globl print_message_digest
 print_message_digest:
-  # 保存寄存器
   addi sp, sp, -32
   sw ra, 28(sp)
   sw s0, 24(sp)
@@ -344,49 +278,40 @@ print_message_digest:
   sw s3, 12(sp)
   sw s4, 8(sp)
   
-  # 保存参数
-  mv s0, a0          # 消息摘要指针
-  li s1, 0           # 字节索引
-  la s3, hex_chars   # 16进制字符表
+  mv s0, a0
+  li s1, 0
+  la s3, hex_chars
   
 print_digest_loop:
-  li t0, 16          # MD5摘要总共16字节
+  li t0, 16
   beq s1, t0, print_digest_done
   
-  # 获取当前字节
   add t1, s0, s1
   lb s2, 0(t1)
   
-  # 打印高4位
-  srli t2, s2, 4     # 获取高4位
+  srli t2, s2, 4
   andi t2, t2, 0xF
-  add t3, s3, t2     # 获取对应的16进制字符
+  add t3, s3, t2
   lb a0, 0(t3)
   
-  # 打印字符
-  li a7, 11          # 打印字符的系统调用
+  li a7, 11
   ecall
   
-  # 打印低4位
-  andi t2, s2, 0xF   # 获取低4位
-  add t3, s3, t2     # 获取对应的16进制字符
+  andi t2, s2, 0xF
+  add t3, s3, t2
   lb a0, 0(t3)
   
-  # 打印字符
-  li a7, 11          # 打印字符的系统调用
+  li a7, 11
   ecall
   
-  # 继续下一个字节
   addi s1, s1, 1
   j print_digest_loop
   
 print_digest_done:
-  # 打印换行
-  li a0, 10          # 换行符
-  li a7, 11          # 打印字符的系统调用
+  li a0, 10
+  li a7, 11
   ecall
   
-  # 恢复寄存器
   lw ra, 28(sp)
   lw s0, 24(sp)
   lw s1, 20(sp)
