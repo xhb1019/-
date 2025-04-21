@@ -20,9 +20,7 @@ for i in range(n_cities):
     G.add_node(i, population=population[i], vaccine_rate=vaccine_rate[i], temperature=temperature[i])
 
 # Add city connections (weights represent mobility intensity)
-connections = [
-
-]
+connections = []
 
 for i, j, w in connections:
     G.add_edge(i, j, weight=w)
