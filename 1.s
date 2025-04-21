@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 
-# 模型参数
+# 模型参数 用seirs模型分析新冠病毒在中国城市的传播 考虑是冬季 采取开放政策 以及病毒在低温下存活时间提高 考虑疫苗带来的免疫力影响和病毒浓度 人员流动的传播距离  得病后不再感染的条件 用python数据建模分析
 N = 1e7          # 总人口
 T_winter = 4      # 冬季平均温度（℃）
 nu = 0.01         # 每日疫苗接种率（假设）
