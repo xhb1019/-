@@ -21,15 +21,15 @@ for i in range(n_cities):
 
 # Add city connections (weights represent mobility intensity)
 connections = [
-    (0, 1, 0.003), (1, 0, 0.03),  # Beijing-Shanghai
-    (0, 2, 0.002), (2, 0, 0.02),  # Beijing-Guangzhou
-    (0, 5, 0.002), (5, 0, 0.02),  # Beijing-Wuhan
-    (1, 2, 0.003), (2, 1, 0.03),  # Shanghai-Guangzhou
-    (2, 3, 0.006), (3, 2, 0.06),  # Guangzhou-Shenzhen
-    (4, 5, 0.003), (5, 4, 0.03),  # Chengdu-Wuhan
-    (0, 6, 0.001), (6, 0, 0.01),  # Beijing-Harbin
-    (5, 1, 0.002), (1, 5, 0.02),  # Wuhan-Shanghai
-    (5, 2, 0.002), (2, 5, 0.02),  # Wuhan-Guangzhou
+    (0, 1, 0.03), (1, 0, 0.03),  # Beijing-Shanghai
+    (0, 2, 0.02), (2, 0, 0.02),  # Beijing-Guangzhou
+    (0, 5, 0.02), (5, 0, 0.02),  # Beijing-Wuhan
+    (1, 2, 0.03), (2, 1, 0.03),  # Shanghai-Guangzhou
+    (2, 3, 0.06), (3, 2, 0.06),  # Guangzhou-Shenzhen
+    (4, 5, 0.03), (5, 4, 0.03),  # Chengdu-Wuhan
+    (0, 6, 0.01), (6, 0, 0.01),  # Beijing-Harbin
+    (5, 1, 0.02), (1, 5, 0.02),  # Wuhan-Shanghai
+    (5, 2, 0.02), (2, 5, 0.02),  # Wuhan-Guangzhou
 ]
 
 for i, j, w in connections:
