@@ -1,4 +1,4 @@
-import numpy as np 
+23:08:52.245: Failed to load module "canberra-gtk-module"
 import matplotlib.pyplot as plt
 # population
 N = 1e7 + 10 + 5
