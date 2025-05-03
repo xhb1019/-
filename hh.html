@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Letter From The Heart</title>
+    <style>
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px 60px;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            margin: 50px 20px;
+        }
+        h1 {
+            font-size: 2.2rem;
+            color: #5a5a5a;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+        .poem {
+            font-style: italic;
+            color: #6a6a6a;
+            border-left: 3px solid #c3cfe2;
+            padding-left: 25px;
+            margin: 30px 0;
+            line-height: 2;
+        }
+        .container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, transparent 50%, rgba(195, 207, 226, 0.2) 50%);
+            z-index: -1;
+        }
+        .signature {
+            text-align: right;
+            margin-top: 40px;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #555;
+        }
+        .date {
+            text-align: right;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+        .petals {
+            position: absolute;
+            z-index: -1;
+        }
+        .petal {
+            position: absolute;
+            background-color: rgba(255, 192, 203, 0.2);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translate(100px, 100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        .line {
+            width: 100%;
+            height: 1px;
+            background-color: #ddd;
+            margin: 30px 0;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&display=swap');
+    </style>
+</head>
+<body>
+    <div class="petals" id="petals"></div>
+    <div class="container">
+        <h1>A Letter From The Heart</h1>
+        
+        <p>My dearest,</p>
+        
+        <p>As the evening light filters through the curtains and casts long shadows across the room, I find myself reaching for words that might convey the depths of what I feel. In quiet moments like these, when the world slows its hurried pace, memories of you drift gently through my mind like autumn leaves carried on a breeze.</p>
+        
+        <p>The silhouette of your smile against the backdrop of a setting sun. The melody of your laughter mingling with the sound of distant waves. These fragments of our shared past remain etched within me, preserved like pressed flowers between the pages of my favorite book.</p>
+        
+        <div class="poem">
+            My love for you transcends the boundaries of time,<br>
+            Not to reclaim what once was ours,<br>
+            But to honor what will always be true:<br>
+            That you shaped the very contours of my heart,<br>
+            Teaching me to love not just with passion,<br>
+            But with grace, patience, and understanding.
+        </div>
+        
+        <p>The paths we walked together—cobblestone streets of ancient cities, forest trails dappled with sunlight, quiet corridors of museums where we whispered our dreams—have become integral threads in the tapestry of who I am. I carry these moments not as burdens, but as treasures that have enriched my understanding of both beauty and sorrow.</p>
+        
+        <p>I've come to realize that love, in its truest form, sometimes means releasing rather than holding tight. Like the tide that must retreat from the shore, only to return in a different form, we too must honor the natural rhythms of connection and separation.</p>
+        
+        <div class="line"></div>
+        
+        <p>There are days when I catch glimpses of you in unexpected places—in the pages of a book whose passages you once underlined, in the chorus of a song that once served as the soundtrack to our adventures, in the particular shade of blue that matches the sweater you wore on our first winter together. In these moments, I feel not regret, but profound gratitude for having known you.</p>
+        
+        <p>Now, standing on different shores, we face separate horizons. Yet I want you to know that the memories we created have neither been forgotten nor diminished. They have instead been transformed—like carbon under pressure—into something precious that strengthens rather than weakens me.</p>
+        
+        <p>Perhaps that is what love ultimately teaches us: that true connection leaves us better than it found us, even when paths diverge. We can cherish what was without attempting to resurrect it. We can look back without turning back.</p>
+        
+        <div class="poem">
+            To glance backward is to pay homage,<br>
+            To refrain from returning is to show respect,<br>
+            May we each discover our own distinct joy,<br>
+            And bloom brilliantly along separate paths,<br>
+            Like parallel constellations—separate,<br>
+            Yet equally magnificent against the vast night sky.
+        </div>
+        
+        <p>Time, that relentless architect, continues to build new rooms in the mansions of our separate lives. I hope yours is filled with light—with moments of unexpected joy, with connections that nourish your spirit, with achievements that fulfill your deepest ambitions.</p>
+        
+        <p>What we had was real, and beautiful, and true. It was neither a mistake to be regretted nor a failure to be mourned, but rather a chapter—complete in itself—in the continuing stories of our lives. I carry forward not only memories, but lessons: how to love more fully, how to listen more attentively, how to recognize the extraordinary within the seemingly ordinary moments.</p>
+        
+        <p>As the seasons continue their eternal cycle, I too move forward—changed, strengthened, and ever grateful for the time when our lives were intertwined. Though our paths no longer converge, the light from that shared journey continues to illuminate my way.</p>
+        
+        <p>With boundless appreciation for all that was, and sincere wishes for all that will be,</p>
+        
+        <div class="signature">
+            Forever in my heart
+        </div>
+        
+        <div class="date">
+            Under the same stars that once watched over us
+        </div>
+    </div>
+
+    <script>
+        function createPetals() {
+            const petalsContainer = document.getElementById('petals');
+            const screenWidth = window.innerWidth;
+            
+            for (let i = 0; i < 40; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                
+                // Random size
+                const size = Math.random() * 30 + 15;
+                petal.style.width = `${size}px`;
+                petal.style.height = `${size}px`;
+                
+                // Random position
+                petal.style.left = `${Math.random() * screenWidth}px`;
+                petal.style.top = `-${size}px`;
+                
+                // Random animation duration
+                const duration = Math.random() * 10 + 10;
+                petal.style.animationDuration = `${duration}s`;
+                
+                // Random delay
+                petal.style.animationDelay = `${Math.random() * 10}s`;
+                
+                petalsContainer.appendChild(petal);
+            }
+        }
+        
+        window.addEventListener('load', createPetals);
+    </script>
+</body>
+</html>
